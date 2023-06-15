@@ -57,7 +57,7 @@ std::string searchGGA(char *buff) {
   string geo1 = "$GNGLL";
   string geo2 = "$GNGGA";
   string header = buffAsStr.substr(0, 6);
-  if (header == geo1) {
+  if (header == geo2) {
     // found
     coords = buffAsStr.substr(7);
   }
@@ -86,12 +86,18 @@ int main() {
       // other indicators can be checked later because of there different output
       // Come back to me and determine which GEO works best
       string parsedString = searchGLL(readBuffer);
+      string ggaStr = searchGGA(readBuffer);
       // cout << "Raw Coordinates: " << parsedString << endl;
       // pass in the raw data to the init function
-      if (!parsedString.empty()) {
+      if (!ggaStr.empty()) {
+        c.initGGA(ggaStr);
+        cout << c.getGGA().utc << endl;
+        // c.initGGA(parsedString);
+        cout << "Coordinates: " << c.getCoords() << endl;
+      } else if (!parsedString.empty()) {
         c.initGLL(parsedString);
         // c.initGGA(parsedString);
-        cout << "GLL Coordinates: " << c.getCoords() << endl;
+        cout << "Coordinates: " << c.getCoords() << endl;
       }
     }
   }

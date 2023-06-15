@@ -21,7 +21,7 @@ void GPS::initGGA(std::string raw) {
   // Raw data format:
   // 175508.00,3901.22104,N,07725.63373,W,1,12,0.84,85.3,M,-34.5,M,,*4B
   // so we need a to use substr as this is const
-  float utc = (float)std::stof(raw.substr(0, 9));
+  double utc = (double)std::stod(raw.substr(0, 9));
   float latDeg = (float)std::stoi(raw.substr(10, 2));
   float lonDeg = (float)std::stoi(raw.substr(24, 2));
   // Need to divide the minutes by 60... thanks brendan
@@ -50,10 +50,14 @@ bool GPS::isGLLEmpty() {
   return true;
 }
 std::string GPS::getCoords() {
-  std::string lat, lon, msl, c;
+  std::string utc, lat, lon, msl, c;
   if (isGGAEmpty()) {
+    utc = std::to_string(this->gll.utc);
     lat = std::to_string(this->gll.lat);
     lon = std::to_string(this->gll.lon);
+    c.append("UTC: ");
+    c.append(utc);
+    c.append(" ");
     c.append(lat);
     c.append("°N, -");
     c.append(lon);
@@ -62,9 +66,13 @@ std::string GPS::getCoords() {
     // both are empty return empty string
     return c;
   } else {
+    utc = std::to_string(this->gga.utc);
     lat = std::to_string(this->gga.lat);
     lon = std::to_string(this->gga.lon);
     msl = std::to_string(this->gga.msl);
+    c.append("UTC: ");
+    c.append(utc);
+    c.append(" ");
     c.append(lat);
     c.append("°N, -");
     c.append(lon);

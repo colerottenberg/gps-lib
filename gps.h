@@ -16,12 +16,12 @@
 struct GLL {
   std::string rawData;
   float lat, lon = 0.0;
-  uint16_t utc = 0;
+  double utc = 0.0;
 };
 struct GGA {
   std::string rawData;
   float lat, lon, msl = 0.0;
-  uint16_t utc = 0;
+  double utc = 0;
 };
 class GPS {
 private:
@@ -34,5 +34,7 @@ public:
   bool isGGAEmpty();
   void initGLL(std::string raw);
   void initGGA(std::string raw);
+  GLL getGLL() { return this->gll; };
+  GGA getGGA() { return this->gga; };
   std::string getCoords();
 };
