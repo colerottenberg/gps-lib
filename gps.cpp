@@ -1,4 +1,5 @@
 #include "gps.h"
+#include <iostream>
 #include <string>
 
 GPS::GPS() { return; };
@@ -27,7 +28,7 @@ void GPS::initGGA(std::string raw) {
   // Need to divide the minutes by 60... thanks brendan
   float latMin = std::stof(raw.substr(12, 8));
   float lonMin = std::stof(raw.substr(26, 8));
-  float msl = std::stof(raw.substr(47, 3));
+  float msl = std::stof(raw.substr(47, 4));
   latMin /= 60;
   lonMin /= 60;
   latDeg += latMin;
