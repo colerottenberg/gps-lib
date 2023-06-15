@@ -39,20 +39,33 @@ int open_serial_connection() {
   printf("Serial connection configured\n");
   return fd;
 };
-std::string search(char *buff) {
+std::string searchGLL(char *buff) {
   string coords;
   string buffAsStr = buff;
   string geo1 = "$GNGLL";
+  string geo2 = "$GNGGA";
   string header = buffAsStr.substr(0, 6);
   if (header == geo1) {
     // found
-    coords = buffAsStr.substr(7, 26);
+    coords = buffAsStr.substr(7);
+  }
+  return coords;
+};
+std::string searchGGA(char *buff) {
+  string coords;
+  string buffAsStr = buff;
+  string geo1 = "$GNGLL";
+  string geo2 = "$GNGGA";
+  string header = buffAsStr.substr(0, 6);
+  if (header == geo1) {
+    // found
+    coords = buffAsStr.substr(7);
   }
   return coords;
 };
 int main() {
   // Open the serial port
-  gps c;
+  GPS c;
   fd = open_serial_connection();
   if (fd == -1) {
     std::cerr << "Failed to open serial port." << std::endl;
@@ -72,12 +85,13 @@ int main() {
       // We need to look for the string $GNGLL first!
       // other indicators can be checked later because of there different output
       // Come back to me and determine which GEO works best
-      string parsedString = search(readBuffer);
+      string parsedString = searchGLL(readBuffer);
       // cout << "Raw Coordinates: " << parsedString << endl;
       // pass in the raw data to the init function
       if (!parsedString.empty()) {
-        c.init(parsedString);
-        cout << " Coordinates: " << c.getCoords() << endl;
+        c.initGLL(parsedString);
+        // c.initGGA(parsedString);
+        cout << "GLL Coordinates: " << c.getCoords() << endl;
       }
     }
   }
