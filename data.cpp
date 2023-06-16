@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
         // we can now impl the logic about how to write to a file
         std::string log = c->log();
         if (!log.empty()) {
-          cout << log;
+          cout << i << ',' << log;
           fout << log;
           // now for percent finished
           float per = ((float)i / (float)t) * 100.0;
