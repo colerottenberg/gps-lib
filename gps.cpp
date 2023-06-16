@@ -99,7 +99,37 @@ std::string GPS::getCoords() {
   }
   return c;
 }
-
+std::string GPS::log() {
+  std::string utc, lat, lon, msl, c;
+  if (isGGAEmpty()) {
+    utc = std::to_string(this->gll.utc);
+    lat = std::to_string(this->gll.lat);
+    lon = std::to_string(this->gll.lon);
+    c.append(utc);
+    c.append(",");
+    c.append(lat);
+    c.append(",-");
+    c.append(lon);
+    c += '\n';
+  } else if (isGLLEmpty()) {
+    // both are empty return empty string
+    return c;
+  } else {
+    utc = std::to_string(this->gga.utc);
+    lat = std::to_string(this->gga.lat);
+    lon = std::to_string(this->gga.lon);
+    msl = std::to_string(this->gga.msl);
+    c.append(utc);
+    c.append(",");
+    c.append(lat);
+    c.append(",-");
+    c.append(lon);
+    c.append(",");
+    c.append(msl);
+    c += '\n';
+  }
+  return c;
+}
 int GPS::open_serial_connection() {
   // https://stackoverflow.com/questions/22544751/how-to-send-and-read-data-from-serial-port-in-c
   int fd;
