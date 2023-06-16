@@ -6,6 +6,7 @@
 #include <ostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <string>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
@@ -39,7 +40,7 @@ private:
   GGA gga;
 
 public:
-  static int open_serial_connection();
+  static int open_serial_connection(std::string port);
   static std::string searchGLL(char *buff);
   static std::string searchGGA(char *buff);
   GPS();

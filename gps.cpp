@@ -1,6 +1,7 @@
 #include "gps.h"
 #include <cerrno>
 #include <cstdint>
+#include <cstring>
 #include <fcntl.h>
 #include <iostream>
 #include <ostream>
@@ -130,12 +131,14 @@ std::string GPS::log() {
   }
   return c;
 }
-int GPS::open_serial_connection() {
+int GPS::open_serial_connection(std::string port) {
   // https://stackoverflow.com/questions/22544751/how-to-send-and-read-data-from-serial-port-in-c
   int fd;
-  const char port[] = "/dev/ttyACM0";
+  // char port[] = "/dev/ttyACM0";
+  // char cPort[port.size()];
+  // std::strncpy(cPort, port.c_str(), sizeof(cPort));
   printf("Starting\n");
-  fd = open(port, O_RDWR | O_NONBLOCK);
+  fd = open(port.c_str(), O_RDWR | O_NONBLOCK);
   if (fd == -1) {
     printf("Failed to open serial connection\n");
     exit(1);

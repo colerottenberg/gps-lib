@@ -19,17 +19,32 @@
 using namespace std;
 int main(int argc, char *argv[]) {
   // Open the serial port
-  // GPS c;
+  int t = 10;
+  string port = "/dev/ttyACM0";
+  if (argc == 1) {
+    // nothing happens here
+  } else if (argc == 2) {
+    // set the first arg to t as in the number of times we parse gps data
+    t = std::stoi(argv[1]);
+  } else if (argc == 3) {
+    // set the first arg to t as in the number of times we parse gps data
+    // set arg 2 to the correct serial port
+    t = std::stoi(argv[1]);
+    port = argv[2];
+  } else {
+    // print too many args
+    std::cerr << "Too many arguments!" << endl;
+    return 1;
+  }
   fstream fout;
   fout.open("log.csv", ios::out | ios::app);
-  int fd = GPS::open_serial_connection();
+  int fd = GPS::open_serial_connection(port);
   if (fd == -1) {
     std::cerr << "Failed to open serial port." << std::endl;
     return 1;
   } else {
     // read serial port
     int i = 1;
-    int t = std::stoi(argv[1]);
     GPS c;
     while (i <= t) {
       bool valid = GPS::recv_data(fd, &c);
