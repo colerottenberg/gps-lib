@@ -192,8 +192,8 @@ GPS *GPS::recv_data(int fd) {
   }
   // cout << string(buff) << endl;
   // now we need to parse the data as before... first as GGA then GLL
-  string ggaStr = searchGGA(buff);
   string gllStr = searchGLL(buff);
+  string ggaStr = searchGGA(buff);
   if (!ggaStr.empty()) {
     c->initGGA(ggaStr);
   } else if (!gllStr.empty()) {
