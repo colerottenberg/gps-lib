@@ -30,14 +30,15 @@ int main(int argc, char *argv[]) {
     // read serial port
     int i = 1;
     int t = std::stoi(argv[1]);
+    GPS c;
     while (i <= t) {
-      GPS *c = GPS::recv_data(fd);
-      if (c) {
+      bool valid = GPS::recv_data(fd, &c);
+      if (valid) {
         // now we have data in this GPS class which we will need to delete
         // we can now impl the logic about how to write to a file
-        std::string log = c->log();
+        std::string log = c.log();
         if (!log.empty()) {
-          sleep(6);
+          // sleep(6);
           cout << i << ',' << log;
           fout << log;
           // now for percent finished
@@ -45,7 +46,6 @@ int main(int argc, char *argv[]) {
           cout << std::to_string((int)round(per)) << "%" << endl;
           i++;
         }
-        delete c;
       }
     }
     fout.close();

@@ -179,10 +179,10 @@ std::string GPS::searchGGA(char *buff) {
   }
   return coords;
 };
-GPS *GPS::recv_data(int fd) {
+bool GPS::recv_data(int fd, GPS *c) {
   // read messages over serial connection the using all the given methods to the
   // library parse and clean the data start loop until read over
-  GPS *c = new GPS();
+
   char buff[512];
   int bytesRead = 0;
   while (bytesRead <= 0) {
@@ -199,8 +199,7 @@ GPS *GPS::recv_data(int fd) {
   } else if (!gllStr.empty()) {
     c->initGLL(gllStr);
   } else {
-    delete c;
-    return nullptr;
+    return false;
   }
-  return c;
+  return true;
 };

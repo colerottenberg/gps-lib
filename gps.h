@@ -52,5 +52,5 @@ public:
   GGA getGGA() { return this->gga; };
   std::string getCoords();
   std::string log();
-  static GPS *recv_data(int fd);
+  static bool recv_data(int fd, GPS *c);
 };
