@@ -1,6 +1,16 @@
 #pragma once
+#include <cerrno>
 #include <cstdint>
+#include <fcntl.h>
+#include <iostream>
+#include <ostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
+#include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <termios.h>
 // #define LAT_DEG
 // #define LON_DEG 111111.1
 //
@@ -21,7 +31,7 @@ struct GLL {
 struct GGA {
   std::string rawData;
   float lat, lon, msl = 0.0;
-  double utc = 0;
+  double utc = 0.0;
 };
 class GPS {
 private:
@@ -29,7 +39,11 @@ private:
   GGA gga;
 
 public:
+  static int open_serial_connection();
+  static std::string searchGLL(char *buff);
+  static std::string searchGGA(char *buff);
   GPS();
+  ~GPS();
   bool isGLLEmpty();
   bool isGGAEmpty();
   void initGLL(std::string raw);
@@ -37,4 +51,5 @@ public:
   GLL getGLL() { return this->gll; };
   GGA getGGA() { return this->gga; };
   std::string getCoords();
+  static GPS *recv_data(int fd);
 };
