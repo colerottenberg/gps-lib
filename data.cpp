@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
         // we can now impl the logic about how to write to a file
         std::string log = c->log();
         if (!log.empty()) {
+          sleep(6);
           cout << i << ',' << log;
           fout << log;
           // now for percent finished
